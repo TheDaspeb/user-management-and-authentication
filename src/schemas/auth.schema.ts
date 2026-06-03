@@ -1,6 +1,6 @@
-import { email, z } from "zod";
+import { z } from "zod";
 
-export const registerSchema = z.object({
+export const RegisterInput = z.object({
     fullName:z
     .string()
     .min(3, "El nombre debe tener minimo 3 caracteres"),
@@ -13,7 +13,9 @@ export const registerSchema = z.object({
     .min(6, "La contraseña debe ser nímino de 6 caracteres"),
 });
 
-export const loginSchema = z.object({
+export type RegisterInputType = z.infer<typeof RegisterInput>;
+
+export const LoginInput = z.object({
     email:z
     .email("correo electronico inválido"),
 
@@ -21,3 +23,5 @@ export const loginSchema = z.object({
     .string()
     .min(6, "la contraseña debe tener al menos 6 caracteres"),
 });
+
+export type LoginInputType = z.infer<typeof LoginInput>

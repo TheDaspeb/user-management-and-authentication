@@ -12,6 +12,6 @@ export function generateToken(payload:object) {
     });
 }
 
-export function verifyYoken(token:string) {
+export function verifyToken(token:string) {
     return jwt.verify(token, JWT_SECRET);
 }
