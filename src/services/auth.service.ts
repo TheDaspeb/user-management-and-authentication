@@ -1,6 +1,6 @@
 import { connectDB } from "../lib/mongodb";
 import { hashPassword, comparePassword } from "../lib/password";
-import { generateToken } from "../lib/jwt";
+import { generateAccessToken, generateRefreshToken } from "../lib/jwt";
 import { User } from "../models/User.model";
 import type { LoginInputType, RegisterInputType } from "../schemas/auth.schema";
 
@@ -25,14 +25,19 @@ export const authService = {
             password: hashedPassword,
         });
 
-        const token = generateToken({
+        const payload = {
             userId: user._id.toString(),
             email: user.email,
             role: user.role,
-        });
+        }
+
+        const accessToken = generateAccessToken(payload);
+        const refreshToken = generateRefreshToken(payload);
 
         return {
-            token, user: {
+            accessToken,
+            refreshToken,
+            user: {
                 id: user._id.toString(),
                 fullName: user.fullName,
                 email: user.email,
@@ -61,14 +66,19 @@ export const authService = {
             throw new Error("Credenciales inválidas")
         }
 
-        const token = generateToken({
+        const payload = {
             userId: user._id.toString(),
             email: user.email,
             role: user.role,
-        });
+        }
+
+        const accessToken = generateAccessToken(payload);
+        const refreshToken = generateRefreshToken(payload);
 
         return {
-            token, user: {
+            accessToken,
+            refreshToken,
+            user: {
                 id: user._id.toString(),
                 fullName: user.fullName,
                 email: user.email,

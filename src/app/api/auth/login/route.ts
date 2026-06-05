@@ -11,7 +11,7 @@ export async function POST(request: Request) {
 
         const result = await authService.login(data);
 
-        await setAuthCookie(result.token);
+        await setAuthCookie(result.accessToken, result.refreshToken);
 
         return NextResponse.json(
             {
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
                         ? error.message
                         : "Error al iniciar sesión",
             },
-            { status: 400 }
+            { status: 401 }
         );
     }
 }

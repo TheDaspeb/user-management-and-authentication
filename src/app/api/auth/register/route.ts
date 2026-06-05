@@ -11,7 +11,7 @@ export async function POST(request:Request) {
 
         const result = await authService.register(data);
 
-        await setAuthCookie(result.token);
+        await setAuthCookie(result.accessToken, result.refreshToken);
 
         return NextResponse.json(
             {
