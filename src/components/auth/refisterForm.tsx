@@ -2,6 +2,7 @@
 
 import { stringify } from "querystring";
 import React, { useState } from "react";
+import { Card } from "../ui/Card";
 
 export function RegisterForm() {
     const [form, setForm] = useState({
@@ -34,36 +35,39 @@ export function RegisterForm() {
     }
 
     return (
-        <form onSubmit={handleSubmite}>
-            <input
-                type="text"
-                placeholder="Nombre completo"
-                value={form.fullName}
-                onChange={(e) =>
-                    setForm({... form, fullName: e.target.value})
-                }
-            />
+        
+        <Card>
+            <form onSubmit={handleSubmite}>
+                <input
+                    type="text"
+                    placeholder="Nombre completo"
+                    value={form.fullName}
+                    onChange={(e) =>
+                        setForm({... form, fullName: e.target.value})
+                    }
+                />
 
-            <input
-                type="email"
-                placeholder="Correo"
-                value={form.email}
-                onChange={(e) => 
-                    setForm({...form, email: e.target.value})
-                }
-            />
+                <input
+                    type="email"
+                    placeholder="Correo"
+                    value={form.email}
+                    onChange={(e) => 
+                        setForm({...form, email: e.target.value})
+                    }
+                />
 
-            <input
-                type="password"
-                placeholder="Contraseña"
-                value={form.password}
-                onChange={(e) => 
-                    setForm({...form, password: e.target.value})
-                }
-            />
-            <button type="submit">Registrarme</button>
+                <input
+                    type="password"
+                    placeholder="Contraseña"
+                    value={form.password}
+                    onChange={(e) => 
+                        setForm({...form, password: e.target.value})
+                    }
+                />
+                <button type="submit">Registrarme</button>
 
-            {message && <p>{message}</p>}
-        </form>
+                {message && <p>{message}</p>}
+            </form>
+        </Card>    
     );
 }

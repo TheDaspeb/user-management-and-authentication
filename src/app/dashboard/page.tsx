@@ -22,6 +22,10 @@ export default function DashboardPage() {
           <li>
             <Link href="/dashboard/settings">Configuración</Link>
           </li>
+
+          <li>
+            <Link href="/dasboard/tasks">Tareas</Link>
+          </li>
         </ul>
       </section>
     </main>

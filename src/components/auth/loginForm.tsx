@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { email } from "zod";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Card } from "../ui/Card";
+
 
 export function LoginForm() {
     const router = useRouter();
@@ -36,28 +39,25 @@ export function LoginForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="emial"
-                placeholder="Correo"
-                value={form.email}
-                onChange={(e)=>
-                    setForm({ ...form, email: e.target.value})
-                }
-            />
 
-            <input
-                type="password"
-                placeholder="Contraseña"
-                value={form.password}
-                onChange={(e)=>
-                    setForm({ ...form, password: e.target.value})
-                }
-            />
+        <Card>
+            <form onSubmit={handleSubmit}>
+                <Input
+                    type="emial"
+                    placeholder="Correo"
+                
+                />
 
-            <button type="submit">Iniciar Sesión</button>
+                <Input
+                    type="password"
+                    placeholder="Contraseña"
+                />
 
-            {message && <p>{message}</p>}
-        </form>
+                <Button type="submit">Iniciar Sesión</Button>
+
+                {message && <p>{message}</p>}
+            </form>
+        </Card>
+        
     );
 }

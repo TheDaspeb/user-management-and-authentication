@@ -4,3 +4,11 @@ import { RegisterInput, LoginInput } from "../schemas/auth.schema";
 
 export type RegisterInputType = z.infer<typeof RegisterInput>;
 export type LoginInputType = z.infer<typeof LoginInput>;
+
+export type Task = {
+    id:string,
+    title: string,
+    description: string,
+    completed:boolean
+};
+
