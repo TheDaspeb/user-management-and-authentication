@@ -23,7 +23,7 @@ export function LoginForm() {
         const response = await fetch("/api/auth/login", {
             method: "POST",
             headers: {
-                "content-Type": "application/json",
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(form),
         });
@@ -43,14 +43,22 @@ export function LoginForm() {
         <Card>
             <form onSubmit={handleSubmit}>
                 <Input
-                    type="emial"
+                    type="email"
                     placeholder="Correo"
+                    value={form.email}
+                    onChange={(e) => 
+                        setForm({... form, email:e.target.value})
+                    }
                 
                 />
 
                 <Input
                     type="password"
                     placeholder="Contraseña"
+                    value={form.password}
+                    onChange={(e) => 
+                        setForm({... form, password:e.target.value})
+                    }
                 />
 
                 <Button type="submit">Iniciar Sesión</Button>
