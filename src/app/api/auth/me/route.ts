@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { verifyToken } from "@/src/lib/jwt";
+import { verifyAccessToken } from "@/src/lib/jwt";
 
 export async function GET() {
   try {
     const cookieStore = await cookies();
 
-    const token = cookieStore.get("token")?.value;
+    const token = cookieStore.get("accessToken")?.value;
 
     if (!token) {
       return NextResponse.json(
@@ -17,7 +17,7 @@ export async function GET() {
       );
     }
 
-    const decoded = verifyToken(token);
+    const decoded = verifyAccessToken(token);
 
     return NextResponse.json(
       {

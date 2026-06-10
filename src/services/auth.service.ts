@@ -52,6 +52,8 @@ export const authService = {
         const user = await User.findOne({
             email: data.email,
         });
+
+        console.log("user Found", user )
         
         if (!user) {
             throw new Error("Credenciales inválidas")
@@ -61,6 +63,8 @@ export const authService = {
             data.password,
             user.password
         );
+
+        console.log("password valid", isPasswordValid)
 
         if (!isPasswordValid) {
             throw new Error("Credenciales inválidas")

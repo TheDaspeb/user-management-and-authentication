@@ -1,127 +1,68 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from "react";
-import { Task } from "@/src/types/auth.types";
-import { Input } from "@/src/components/ui/input";
-import { Button } from "@/src/components/ui/button";
 import { Card } from "@/src/components/ui/Card";
+import { TaskForm } from "./TaskForm";
+import { TaskList } from "./TaskList";
+import { useTaskManager } from "./useTaskManager";
 
 export function TaskManager() {
-    const [tasks, setTasks] = useState<Task[]>([]);
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [editingId, setEditing] = useState<string | null>(null);
+  const {
+    tasks,
+    users,
+    isAdmin,
+    loadingUsers,
+    usersError,
+    title,
+    description,
+    assignedUserId,
+    editingId,
+    message,
+    setTitle,
+    setDescription,
+    setAssignedUserId,
+    handleSubmit,
+    handleEdit,
+    handleDelete,
+    startTask,
+    finishTask,
+    toggleCompleted,
+    cancelEditing,
+    getElapsedSeconds,
+    formatDuration,
+  } = useTaskManager();
 
-    useEffect(() => {
-        const storedTasks = localStorage.getItem("tasks");
+  return (
+    <section className="space-y-6">
+      <Card>
+        <h1>Gestión de tareas</h1>
+        <TaskForm
+          title={title}
+          description={description}
+          assignedUserId={assignedUserId}
+          users={users}
+          isAdmin={isAdmin}
+          loadingUsers={loadingUsers}
+          usersError={usersError}
+          editingId={editingId}
+          message={message}
+          onSubmit={handleSubmit}
+          onTitleChange={setTitle}
+          onDescriptionChange={setDescription}
+          onAssignedUserChange={setAssignedUserId}
+          onCancelEdit={cancelEditing}
+        />
+      </Card>
 
-        if (storedTasks) {
-            setTasks(JSON.parse(storedTasks));
-        }
-    },[]);
-
-    useEffect(() => {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-    }, [tasks]);
-
-    function handleSubmit(e:React.FormEvent) {
-        e.preventDefault();
-
-        if(!title.trim()) return;
-
-        if(editingId) {
-            setTasks((prevTasks)=>
-                prevTasks.map((task) =>
-                    task.id === editingId
-                        ?{...task, title, description}
-                        : task
-                )
-            );
-
-            setEditing(null);
-
-        } else {
-            const newTask: Task = {
-                id:crypto.randomUUID(),
-                title,
-                description,
-                completed: false,
-            };
-
-            setTasks((prevTasks) => [... prevTasks, newTask]);
-        }
-
-        setTitle("");
-        setDescription("");
-    }
-
-    function handleEdit(task:Task) {
-        setEditing(task.id);
-        setTitle(task.title);
-        setDescription(task.description)
-    }
-
-    function handleDelete(id:string) {
-        setTasks ((prevTasks)=> 
-            prevTasks.filter((task)=> task.id !== id)
-        );
-    }
-
-    function toggleCompleted(id:string){
-        setTasks((prevTasks)=> 
-            prevTasks.map((task)=>
-            task.id === id
-                ?{...task, completed:!task.completed}
-                :task
-            )
-        );
-    }
-
-
-    return (
-        <Card>
-            <h1>Gestión de tareas</h1>
-
-            <form onSubmit={handleSubmit}>
-                <Input 
-                    type="text"
-                    placeholder="Titulo de la tarea"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                />
-
-                <textarea 
-                    placeholder="Descripción"
-                    value={description}
-                    onChange={(e)=> setDescription(e.target.value)}
-                />
-
-                <Button type="submit">
-                    {editingId ? "Actualizar tarea": "Crear tarea"}
-                </Button>
-            </form>
-
-            <ul>
-                {tasks.map((tasks) => (
-                    <li key={tasks.id}>
-                        <h3>{tasks.title}</h3>
-                        <p>{tasks.description}</p>
-                        <p>{tasks.completed}</p> 
-
-                        <Button onClick={() => toggleCompleted(tasks.id)}>
-                            Cambiar estado
-                        </Button>   
-
-                        <Button onClick={() => handleEdit(tasks)}>
-                            Editar
-                        </Button> 
-
-                        <Button onClick={()=> handleDelete(tasks.id)}>
-                            Eliminar
-                        </Button>   
-                    </li>
-                ))}
-            </ul>
-        </Card>
-    );
+      <TaskList
+        tasks={tasks}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onStart={startTask}
+        onFinish={finishTask}
+        onToggleCompleted={toggleCompleted}
+        getElapsedSeconds={getElapsedSeconds}
+        formatDuration={formatDuration}
+      />
+    </section>
+  );
 }
